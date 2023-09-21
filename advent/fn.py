@@ -1,6 +1,7 @@
 import builtins as __builtins
 import functools as __functools
 import itertools as __itertools
+from collections import defaultdict as __defaultdict
 from collections.abc import Iterable as __Iterable
 from collections.abc import Reversible as __Reversible
 from collections.abc import Sequence as __Sequence
@@ -12,6 +13,7 @@ from typing import Union as __Union
 from .classes import UNDEFINED as __UNDEFINED
 from .classes import UnaryFn as __UnaryFn
 from .classes import Undefined as __Undefined
+from .utility import comparator_to_key as __comparator_to_key
 
 __MODULE_NAME = 'fn'
 
@@ -33,9 +35,12 @@ __all__ = [
     'sliding_scan',
     'partition',
     'padded_partition',
+    'group_by',
     'distinct',
     'sum',
     'product',
+    'count',
+    'count_if',
     'all',
     'any',
     'none',
@@ -48,6 +53,7 @@ __all__ = [
     'last',
     'tally',
     'reverse',
+    'sort',
     'cycle',
     'enumerate',
 ]
@@ -156,6 +162,16 @@ def padded_partition(size: int, fill_value: __Any) -> __UnaryFn:
         return __itertools.zip_longest(*its, fillvalue = fill_value)
     return __UnaryFn(f'{__MODULE_NAME}.padded_partition', __inner)
 
+def group_by(selector: __Callable[[__Any], __Any]):
+    """Return iterator which yields groups of elements as tuples for which `selector` returns the same value"""
+    def __inner(arg: __Iterable):
+        groups = __defaultdict(lambda: list())
+        for item in arg:
+            groups[selector(item)].append(item)
+        for item in groups.values():
+            yield tuple(item)
+    return __UnaryFn(f'{__MODULE_NAME}.group_by', __inner)
+
 def distinct() -> __UnaryFn:
     """Return generator with distinct (unique) elemets of the Iterable"""
     def __inner(arg: __Iterable):
@@ -169,6 +185,18 @@ def sum(init: int = 0) -> __UnaryFn:
 def product(init: int = 1) -> __UnaryFn:
     """Return product of all elements of the Iterable with optional `init` value"""
     return __UnaryFn(f'{__MODULE_NAME}.product', reduce(lambda a, b: a * b, init))
+
+def count(value: __Any) -> __UnaryFn:
+    """Return number of elements of the Iterable that are equal to given `value`"""
+    def __inner(arg: __Iterable):
+        return __builtins.sum(1 for item in arg if item == value)
+    return __UnaryFn(f'{__MODULE_NAME}.count', __inner)
+
+def count_if(predicate: __Callable[[__Any], bool]) -> __UnaryFn:
+    """Return number of elements of the Iterable that satisfy given `predicate`"""
+    def __inner(arg: __Iterable):
+        return __builtins.sum(1 for item in arg if predicate(item))
+    return __UnaryFn(f'{__MODULE_NAME}.count_if', __inner)
 
 def all() -> __UnaryFn:
     """Return true if all elements of the Iterable are truthy"""
@@ -258,6 +286,12 @@ def reverse() -> __UnaryFn:
     def __inner(arg: __Reversible):
         return __builtins.reversed(arg)
     return __UnaryFn(f'{__MODULE_NAME}.reverse', __inner)
+
+def sort(comparator: __Callable[[__Any, __Any], bool]) -> __UnaryFn:
+    """Return iterator which yields elements of the Iterable sorted with given `comparator` """
+    def __inner(arg: __Iterable):
+        return sorted(arg, key = __comparator_to_key(comparator))
+    return __UnaryFn(f'{__MODULE_NAME}.sort', __inner)
 
 def cycle() -> __UnaryFn:
     """Return iterator which yields elements of the Iterable indefinitely"""

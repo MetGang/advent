@@ -37,10 +37,15 @@ __all__ = [
     'ceil',
     'min',
     'max',
+    'midpoint',
+    'imidpoint',
     'lcm',
     'gcd',
     'sign',
     'factorial',
+    'is_even',
+    'is_odd',
+    'is_prime',
 ]
 
 eq = __BinaryFn(f'{__MODULE_NAME}.eq', lambda a, b: a == b)
@@ -133,6 +138,12 @@ min = __BinaryFn(f'{__MODULE_NAME}.min', lambda a, b: __builtins.min(a, b))
 max = __BinaryFn(f'{__MODULE_NAME}.max', lambda a, b: __builtins.max(a, b))
 """Return `max(a, b)`"""
 
+midpoint = __BinaryFn(f'{__MODULE_NAME}.midpoint', lambda a, b: a + (b - a) / 2)
+"""Return `a + (b - a) / 2`"""
+
+imidpoint = __BinaryFn(f'{__MODULE_NAME}.imidpoint', lambda a, b: a + (b - a) // 2)
+"""Return `a + (b - a) // 2`"""
+
 lcm = __BinaryFn(f'{__MODULE_NAME}.lcm', lambda a, b: __math.lcm(a, b))
 """Return `math.lcm(a, b)`"""
 
@@ -144,3 +155,26 @@ sign = __UnaryFn(f'{__MODULE_NAME}.sign', lambda a: (a > 0) - (a < 0))
 
 factorial = __UnaryFn(f'{__MODULE_NAME}.factorial', lambda a: __math.factorial(a))
 """Return `math.factorial(a)`"""
+
+is_even = __UnaryFn(f'{__MODULE_NAME}.is_even', lambda a: a % 2 == 0)
+"""Return `a % 2 == 0`"""
+
+is_odd = __UnaryFn(f'{__MODULE_NAME}.is_even', lambda a: a % 2 == 1)
+"""Return `a % 2 == 1`"""
+
+def __is_prime(n):
+    # https://stackoverflow.com/a/15285588
+    if n == 2 or n == 3: return True
+    if n < 2 or n % 2 == 0: return False
+    if n < 9: return True
+    if n % 3 == 0: return False
+    r = int(n ** 0.5)
+    f = 5
+    while f <= r:
+        if n % f == 0: return False
+        if n % (f + 2) == 0: return False
+        f += 6
+    return True
+
+is_prime = __UnaryFn(f'{__MODULE_NAME}.is_prime', __is_prime)
+"""Return `op.__is_prime(a)`"""
