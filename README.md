@@ -38,7 +38,7 @@ with open('input.txt') as file:
 ```python
 from advent import *
 
-f = read_file('input.txt') | split('\n\n') | map(split('\n') | map(int) | sum()) | max()
+f = gn.read_file('input.txt') | tt.split('\n\n') | rg.map(tt.split('\n') | rg.map(int) | rg.sum()) | rg.max()
 
 print(f())
 ```
@@ -52,18 +52,20 @@ File.read!("input.txt")
     |> String.split("\n")
     |> Stream.map(&String.to_integer/1)
     |> Enum.sum()
-  end)
+  end)xD
   |> Enum.max()
   |> IO.puts()
 ```
 
 ### Modules
 
-- Combinators (cb) - creating new functions from existing ones (composition)
-- Functions (fn) - operations on ranges
-- Generators (gn) - data generation from various sources (e.g. ranges, files)
-- Operators (op) - operations on scalars
-- Text Modifiers (txt) - easier working with strings
+- combinators
+- functions
+- generators
+- operators
+- ranges
+- regex
+- textual
 
 ### Features
 
@@ -71,60 +73,6 @@ File.read!("input.txt")
 - Functions piping
 - Arguments binding
 - Basic combinators
-
-### Some examples
-
-###### Sum of comma separated integers from string
-
-```python
-f = txt.split(',') | fn.map(int) | fn.sum()
-
-f('1,2,3,4,5,6') # 21
-```
-
-###### Filtering out integers not divisible by 7
-
-```python
-f = fn.filter(lambda x: x % 7 == 0) | fn.to(list)
-
-f([ 0, 4, 7, 12, 14, 49 ]) # [ 0, 7, 14, 49 ]
-```
-
-###### Multiply number by 2
-
-```python
-f = op.mul >> 2
-
-f(1) # 2
-f(5) # 10
-```
-
-###### Reciprocal of the number
-
-```python
-f = op.div << 1
-
-f(2) # 0.5
-f(5) # 0.2
-```
-
-###### Find how many numbers are larger than the previous ones
-
-```python
-f = fn.sliding_reduce(2, op.lt) | fn.sum()
-
-f([ 1, 2, 1, 3, 4, 4, 5 ]) # 4
-f([ 3, 2, 1, 0, 0, 1 ]) # 1
-```
-
-###### Check if array contains only unique elements
-
-```python
-f = cb.train(fn.distinct() | fn.tally(), op.eq, fn.tally())
-
-f([ 1, 2, 3, 4, 5, 6 ]) # True
-f([ 0, 55, 1, 8, 55, 4 ]) # False
-```
 
 ### References
 
