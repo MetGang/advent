@@ -38,7 +38,7 @@ with open('input.txt') as file:
 ```python
 from advent import *
 
-f = ag.read_file('input.txt') | at.split('\n\n') | aa.map(at.split('\n') | aa.map(int) | aa.sum()) | aa.max()
+f = read_file('2022-01.txt') | text_split('\n\n') | map(text_split('\n') | map(int) | sum()) | max()
 
 print(f())
 ```

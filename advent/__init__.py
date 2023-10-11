@@ -1,7 +1,7 @@
-from .modules import algorithms as aa
-from .modules import combinators as ac
-from .modules import functions as af
-from .modules import generators as ag
-from .modules import operators as ao
-from .modules import regex as ar
-from .modules import textual as at
+from .modules import operators as op
+from .modules.algorithms import *
+from .modules.combinators import *
+from .modules.functions import *
+from .modules.generators import *
+from .modules.regex import *
+from .modules.textual import *
