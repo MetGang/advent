@@ -1,8 +1,8 @@
 import builtins as __builtins
 import math as __math
 
-from .classes import BinaryFn as __BinaryFn
-from .classes import UnaryFn as __UnaryFn
+from ..classes import BinaryFn as __BinaryFn
+from ..classes import UnaryFn as __UnaryFn
 
 __all__ = [
     'eq',

@@ -10,8 +10,8 @@ from typing import Callable as __Callable
 from typing import Sized as __Sized
 from typing import Union as __Union
 
-from .classes import UnaryFn as __UnaryFn
-from .utility import comparator_to_key as __comparator_to_key
+from ..classes import UnaryFn as __UnaryFn
+from ..utility import comparator_to_key as __comparator_to_key
 
 __UNDEFINED = object()
 

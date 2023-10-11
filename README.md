@@ -38,7 +38,7 @@ with open('input.txt') as file:
 ```python
 from advent import *
 
-f = gn.read_file('input.txt') | tt.split('\n\n') | rg.map(tt.split('\n') | rg.map(int) | rg.sum()) | rg.max()
+f = ag.read_file('input.txt') | at.split('\n\n') | aa.map(at.split('\n') | aa.map(int) | aa.sum()) | aa.max()
 
 print(f())
 ```
@@ -59,11 +59,11 @@ File.read!("input.txt")
 
 ### Modules
 
+- algorithms
 - combinators
 - functions
 - generators
 - operators
-- ranges
 - regex
 - textual
 

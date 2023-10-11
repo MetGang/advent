@@ -1,6 +1,6 @@
 import re as __re
 
-from .classes import UnaryFn as __UnaryFn
+from ..classes import UnaryFn as __UnaryFn
 
 __all__ = [
     'split',

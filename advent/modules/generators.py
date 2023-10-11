@@ -4,7 +4,7 @@ from pathlib import Path as __Path
 from typing import Any as __Any
 from typing import Union as __Union
 
-from .classes import NullaryFn as __NullaryFn
+from ..classes import NullaryFn as __NullaryFn
 
 __all__ = [
     'iterate',

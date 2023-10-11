@@ -1,7 +1,7 @@
 from typing import Any as __Any
 from typing import Callable as __Callable
 
-from .classes import UnaryFn as __UnaryFn
+from ..classes import UnaryFn as __UnaryFn
 
 __all__ = [
     'to',

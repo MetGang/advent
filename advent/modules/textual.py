@@ -1,6 +1,6 @@
 from collections.abc import Iterable as __Iterable
 
-from .classes import UnaryFn as __UnaryFn
+from ..classes import UnaryFn as __UnaryFn
 
 __all__ = [
     'join',

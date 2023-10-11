@@ -1,7 +1,7 @@
-from . import combinators as cb
-from . import functions as fn
-from . import generators as gn
-from . import operators as op
-from . import ranges as rg
-from . import regex as rx
-from . import textual as tt
+from .modules import algorithms as aa
+from .modules import combinators as ac
+from .modules import functions as af
+from .modules import generators as ag
+from .modules import operators as ao
+from .modules import regex as ar
+from .modules import textual as at

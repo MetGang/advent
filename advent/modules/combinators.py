@@ -1,7 +1,7 @@
-from .classes import AnyFn as __AnyFn
-from .classes import BinaryFn as __BinaryFn
-from .classes import NullaryFn as __NullaryFn
-from .classes import UnaryFn as __UnaryFn
+from ..classes import AnyFn as __AnyFn
+from ..classes import BinaryFn as __BinaryFn
+from ..classes import NullaryFn as __NullaryFn
+from ..classes import UnaryFn as __UnaryFn
 
 __all__ = [
     'flip',
