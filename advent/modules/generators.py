@@ -10,6 +10,7 @@ __all__ = [
     'iterate',
     'range',
     'infinite_range',
+    'read_input',
     'read_file',
 ]
 

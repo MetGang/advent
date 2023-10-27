@@ -20,8 +20,8 @@ __all__ = [
     'filter',
     'filter_not',
     'partition',
-    'relaxed_partition',
     'padded_partition',
+    'split_every',
     'group_by',
     'take',
     'drop',
@@ -80,19 +80,19 @@ def partition(size: int) -> __UnaryFn:
         return zip(*its)
     return __UnaryFn(__inner)
 
-def relaxed_partition(size: int) -> __UnaryFn:
-    """Return elements in groups of given `size`, return remaining elements in smaller group"""
-    def __inner(arg: __Iterable):
-        it = iter(arg)
-        while piece := tuple(__itertools.islice(it, size)):
-            yield piece
-    return __UnaryFn(__inner)
-
 def padded_partition(size: int, fill_value: __Any) -> __UnaryFn:
     """Return elements in groups of given `size`, fill missing elements with `fill_value`"""
     def __inner(arg: __Iterable):
         its = [ iter(arg) ] * size
         return __itertools.zip_longest(*its, fillvalue = fill_value)
+    return __UnaryFn(__inner)
+
+def split_every(size: int) -> __UnaryFn:
+    """Return elements in groups of given `size`, return remaining elements in smaller group"""
+    def __inner(arg: __Iterable):
+        it = iter(arg)
+        while piece := tuple(__itertools.islice(it, size)):
+            yield piece
     return __UnaryFn(__inner)
 
 def group_by(selector: __Callable[[__Any], __Any]):
