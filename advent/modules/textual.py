@@ -12,6 +12,13 @@ __all__ = [
     'contains',
     'starts_with',
     'ends_with',
+    'is_space',
+    'is_alnum',
+    'is_alpha',
+    'is_upper',
+    'is_lower',
+    'is_digit',
+    'is_ascii',
 ]
 
 def join(connector: str) -> __UnaryFn:
@@ -72,4 +79,46 @@ def ends_with(substring: str) -> __UnaryFn:
     """Check whether string ends with given `substring`"""
     def __inner(s: str) -> str:
         return s.endswith(substring)
+    return __UnaryFn(__inner)
+
+def is_space() -> __UnaryFn:
+    """Check whether string is composed of whitespace characters"""
+    def __inner(s: str) -> str:
+        return s.isspace()
+    return __UnaryFn(__inner)
+
+def is_alnum() -> __UnaryFn:
+    """Check whether string is composed of alphanumeric characters"""
+    def __inner(s: str) -> str:
+        return s.isalnum()
+    return __UnaryFn(__inner)
+
+def is_alpha() -> __UnaryFn:
+    """Check whether string is composed of alpha characters"""
+    def __inner(s: str) -> str:
+        return s.isalpha()
+    return __UnaryFn(__inner)
+
+def is_upper() -> __UnaryFn:
+    """Check whether string is composed of uppercase characters"""
+    def __inner(s: str) -> str:
+        return s.isupper()
+    return __UnaryFn(__inner)
+
+def is_lower() -> __UnaryFn:
+    """Check whether string is composed of lowercase characters"""
+    def __inner(s: str) -> str:
+        return s.islower()
+    return __UnaryFn(__inner)
+
+def is_digit() -> __UnaryFn:
+    """Check whether string is composed of digit characters"""
+    def __inner(s: str) -> str:
+        return s.isdigit()
+    return __UnaryFn(__inner)
+
+def is_ascii() -> __UnaryFn:
+    """Check whether string is composed of ascii characters"""
+    def __inner(s: str) -> str:
+        return s.isascii()
     return __UnaryFn(__inner)

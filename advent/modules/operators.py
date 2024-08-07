@@ -38,6 +38,8 @@ __all__ = [
     'max',
     'lcm',
     'gcd',
+    'even',
+    'odd',
 ]
 
 eq = __BinaryFn(lambda a, b: a == b)
@@ -138,3 +140,9 @@ lcm = __BinaryFn(lambda a, b: __math.lcm(a, b))
 
 gcd = __BinaryFn(lambda a, b: __math.gcd(a, b))
 """Return `math.gcd(a, b)`"""
+
+even = __UnaryFn(lambda a: a % 2 == 0)
+"""Return `a % 2 == 0`"""
+
+odd = __UnaryFn(lambda a: a % 2 != 0)
+"""Return `a % 2 != 0`"""

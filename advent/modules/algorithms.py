@@ -12,6 +12,7 @@ from typing import Union as __Union
 
 from ..classes import UnaryFn as __UnaryFn
 from ..utility import comparator_to_key as __comparator_to_key
+from . import operators as __op
 
 __UNDEFINED = object()
 
@@ -36,6 +37,10 @@ __all__ = [
     'suffixes',
     'count',
     'count_if',
+    'index',
+    'index_if',
+    'indices',
+    'indices_if',
     'sum',
     'product',
     'min',
@@ -46,6 +51,8 @@ __all__ = [
     'first',
     'last',
     'pick',
+    'head',
+    'tail',
     'tally',
     'sliding',
     'sliding_map',
@@ -195,13 +202,47 @@ def count_if(predicate: __Callable[[__Any], bool]) -> __UnaryFn:
         return __builtins.sum(1 for item in arg if predicate(item))
     return __UnaryFn(__inner)
 
+def index(value: __Any, invalid_idx: __Any = -1) -> __UnaryFn:
+    """Return index of the first element that is equal to given `value`, `invalid_idx` otherwise"""
+    def __inner(arg: __Iterable):
+        for i, v in __builtins.enumerate(arg):
+            if value == v:
+                return i
+        return invalid_idx
+    return __UnaryFn(__inner)
+
+def index_if(predicate: __Callable[[__Any], bool], invalid_idx: __Any = -1) -> __UnaryFn:
+    """Return index of the first element that satisfies given `predicate`, `invalid_idx` otherwise"""
+    def __inner(arg: __Iterable):
+        for i, v in __builtins.enumerate(arg):
+            if predicate(v):
+                return i
+        return invalid_idx
+    return __UnaryFn(__inner)
+
+def indices(value: __Any) -> __UnaryFn:
+    """Return indices of all elements that are equal to given `value`"""
+    def __inner(arg: __Iterable):
+        for i, v in __builtins.enumerate(arg):
+            if value == v:
+                yield i
+    return __UnaryFn(__inner)
+
+def indices_if(predicate: __Callable[[__Any], bool]) -> __UnaryFn:
+    """Return indices of all elements that satisfy given `predicate`"""
+    def __inner(arg: __Iterable):
+        for i, v in __builtins.enumerate(arg):
+            if predicate(v):
+                yield i
+    return __UnaryFn(__inner)
+
 def sum(init: int = 0) -> __UnaryFn:
     """Return sum of all elements with optional `init` value"""
-    return reduce(lambda a, b: a + b, init)
+    return reduce(__op.add, init)
 
 def product(init: int = 1) -> __UnaryFn:
     """Return product of all elements with optional `init` value"""
-    return reduce(lambda a, b: a * b, init)
+    return reduce(__op.mul, init)
 
 def min() -> __UnaryFn:
     """Return minimum element"""
@@ -263,6 +304,16 @@ def pick(index: int) -> __UnaryFn:
             for i, v in __builtins.enumerate(arg):
                 if i == index:
                     return v
+    return __UnaryFn(__inner)
+
+def head() -> __UnaryFn:
+    """Return head (first) element"""
+    return first()
+
+def tail() -> __UnaryFn:
+    """Return tail (all but first) elements"""
+    def __inner(arg: __Iterable):
+        return __itertools.islice(arg, 1, None)
     return __UnaryFn(__inner)
 
 def tally() -> __UnaryFn:

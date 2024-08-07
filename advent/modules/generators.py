@@ -9,9 +9,11 @@ from ..classes import NullaryFn as __NullaryFn
 __all__ = [
     'iterate',
     'range',
+    'irange',
     'infinite_range',
     'read_input',
     'read_file',
+    'read_file_lines',
 ]
 
 def iterate(any: __Any) -> __NullaryFn:
@@ -24,6 +26,12 @@ def range(begin: int, end: int, step: int = 1) -> __NullaryFn:
     """Return generator for [ `begin`, `end` ) range with given `step`"""
     def __inner():
         return __builtins.range(begin, end, step)
+    return __NullaryFn(__inner)
+
+def irange(first: int, last: int, step: int = 1) -> __NullaryFn:
+    """Return generator for [ `first`, `last` ] range with given `step`"""
+    def __inner():
+        return __builtins.range(first, last + 1, step)
     return __NullaryFn(__inner)
 
 def infinite_range(first: int = 0, step: int = 1) -> __NullaryFn:
@@ -43,4 +51,11 @@ def read_file(path: __Union[__Path, str]) -> __NullaryFn:
     def __inner():
         with open(path, 'r') as file:
             return file.read()
+    return __NullaryFn(__inner)
+
+def read_file_lines(path: __Union[__Path, str]) -> __NullaryFn:
+    """Return lines of the file designated by given `path`"""
+    def __inner():
+        with open(path, 'r') as file:
+            return file.read().splitlines()
     return __NullaryFn(__inner)
