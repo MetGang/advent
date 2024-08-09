@@ -87,7 +87,7 @@ def partition(size: int) -> __UnaryFn:
         return zip(*its)
     return __UnaryFn(__inner)
 
-def padded_partition(size: int, fill_value: __Any) -> __UnaryFn:
+def padded_partition(size: int, fill_value: __Any = None) -> __UnaryFn:
     """Return elements in groups of given `size`, fill missing elements with `fill_value`"""
     def __inner(arg: __Iterable):
         its = [ iter(arg) ] * size
@@ -186,7 +186,7 @@ def prefixes() -> __UnaryFn:
 def suffixes() -> __UnaryFn:
     """Return all suffixes"""
     def __inner(arg: __Sequence):
-        for size in __builtins.range(1, len(arg) + 1):
+        for size in __builtins.range(len(arg), 0, -1):
             yield tuple(__itertools.islice(arg, None, size))
     return __UnaryFn(__inner)
 
