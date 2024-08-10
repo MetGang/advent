@@ -271,7 +271,7 @@ def any() -> __UnaryFn:
 def none() -> __UnaryFn:
     """Return true if none element is truthy"""
     def __inner(arg: __Iterable):
-        return not __builtins.all(arg)
+        return not __builtins.any(arg)
     return __UnaryFn(__inner)
 
 def first() -> __UnaryFn:
