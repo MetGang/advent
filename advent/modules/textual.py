@@ -45,10 +45,16 @@ def trim_right() -> __UnaryFn:
         return s.rstrip()
     return __UnaryFn(__inner)
 
-def split(separator: str, limit: int = -1) -> __UnaryFn:
-    """Return generator of the substrings in the string split by `separator` up to the `limit` without empty splits"""
+def split(limit: int = -1) -> __UnaryFn:
+    """Return substrings of the string split by whitespaces up to the `limit` without empty splits"""
     def __inner(s: str) -> str:
-        return (item for item in s.split(separator, limit))
+        return s.split(None, limit)
+    return __UnaryFn(__inner)
+
+def split_by(separator: str, limit: int = -1) -> __UnaryFn:
+    """Return substrings of the string split by `separator` up to the `limit`"""
+    def __inner(s: str) -> str:
+        return s.split(separator, limit)
     return __UnaryFn(__inner)
 
 def replace(old: str, new: str) -> __UnaryFn:
