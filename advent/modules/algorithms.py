@@ -296,7 +296,7 @@ def last() -> __UnaryFn:
     return __UnaryFn(__inner)
 
 def pick(index: int) -> __UnaryFn:
-    """Return nth element"""
+    """Return `index` (nth) element"""
     def __inner(arg: __Union[__Sequence, __Iterable]):
         try:
             return arg[index]
