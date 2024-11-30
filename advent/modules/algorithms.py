@@ -7,6 +7,7 @@ from collections.abc import Reversible as __Reversible
 from collections.abc import Sequence as __Sequence
 from typing import Any as __Any
 from typing import Callable as __Callable
+from typing import Mapping as __Mapping
 from typing import Sized as __Sized
 from typing import Union as __Union
 
@@ -53,6 +54,7 @@ __all__ = [
     'pick',
     'head',
     'tail',
+    'edges',
     'tally',
     'sliding',
     'sliding_map',
@@ -62,10 +64,14 @@ __all__ = [
     'sliding_scan',
 ]
 
-def map(mapper: __Callable[[__Any], __Any]) -> __UnaryFn:
+def map(mapper: __Union[__Callable[[__Any], __Any], __Mapping]) -> __UnaryFn:
     """Apply `mapper` to each element"""
-    def __inner(arg: __Iterable):
-        return __builtins.map(mapper, arg)
+    if callable(mapper):
+        def __inner(arg: __Iterable):
+            return __builtins.map(mapper, arg)
+    else:
+        def __inner(arg: __Iterable):
+            return __builtins.map(lambda item: mapper[item], arg)
     return __UnaryFn(__inner)
 
 def filter(predicate: __Callable[[__Any], bool]) -> __UnaryFn:
@@ -314,6 +320,23 @@ def tail() -> __UnaryFn:
     """Return tail (all but first) elements"""
     def __inner(arg: __Iterable):
         return __itertools.islice(arg, 1, None)
+    return __UnaryFn(__inner)
+
+def edges() -> __UnaryFn:
+    """"""
+    def __inner(arg: __Union[__Sequence, __Iterable]):
+        try:
+            return arg[0], arg[-1]
+        except:
+            f = None
+            l = None
+            for item in arg:
+                f = item
+                l = item
+                break
+            for item in arg:
+                l = item
+            return f, l
     return __UnaryFn(__inner)
 
 def tally() -> __UnaryFn:
