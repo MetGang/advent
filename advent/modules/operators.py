@@ -32,6 +32,7 @@ __all__ = [
     'pow',
     'abs',
     'sign',
+    'diff',
     'floor',
     'ceil',
     'min',
@@ -122,6 +123,9 @@ abs = __UnaryFn(lambda a: __builtins.abs(a))
 
 sign = __UnaryFn(lambda a: (a > 0) - (a < 0))
 """Return `(a > 0) - (a < 0)`"""
+
+diff = __BinaryFn(lambda a, b: __builtins.abs(a - b))
+"""Return `abs(a - b)`"""
 
 floor = __UnaryFn(lambda a: __math.floor(a))
 """Return `math.floor(a)`"""
