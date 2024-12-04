@@ -26,6 +26,7 @@ __all__ = [
     'split_every',
     'group_by',
     'take',
+    'take_every',
     'drop',
     'distinct',
     'sort',
@@ -123,6 +124,12 @@ def take(count: int) -> __UnaryFn:
     """Return first `count` elements"""
     def __inner(arg: __Iterable):
         return __itertools.islice(arg, None, count)
+    return __UnaryFn(__inner)
+
+def take_every(step: int, shift: int = 0) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Iterable):
+        return __itertools.islice(arg, shift, None, step)
     return __UnaryFn(__inner)
 
 def drop(count: int) -> __UnaryFn:
