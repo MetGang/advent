@@ -28,6 +28,7 @@ __all__ = [
     'take',
     'take_every',
     'drop',
+    'drop_every',
     'distinct',
     'sort',
     'reverse',
@@ -37,6 +38,9 @@ __all__ = [
     'scan',
     'prefixes',
     'suffixes',
+    'replicate',
+    'contains',
+    'contains_if',
     'count',
     'count_if',
     'index',
@@ -63,7 +67,6 @@ __all__ = [
     'sliding_filter_not',
     'sliding_reduce',
     'sliding_scan',
-    'zippify',
 ]
 
 def map(mapper: __Union[__Callable[[__Any], __Any], __Mapping]) -> __UnaryFn:
@@ -126,16 +129,26 @@ def take(count: int) -> __UnaryFn:
         return __itertools.islice(arg, None, count)
     return __UnaryFn(__inner)
 
-def take_every(step: int, shift: int = 0) -> __UnaryFn:
+def take_every(step: int) -> __UnaryFn:
     """"""
     def __inner(arg: __Iterable):
-        return __itertools.islice(arg, shift, None, step)
+        for i, item in __builtins.enumerate(arg, 1):
+            if i % step == 0:
+                yield item
     return __UnaryFn(__inner)
 
 def drop(count: int) -> __UnaryFn:
     """Return all but first `count` elements"""
     def __inner(arg: __Iterable):
         return __itertools.islice(arg, count, None)
+    return __UnaryFn(__inner)
+
+def drop_every(step: int) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Iterable):
+        for i, item in __builtins.enumerate(arg, 1):
+            if i % step != 0:
+                yield item
     return __UnaryFn(__inner)
 
 def distinct() -> __UnaryFn:
@@ -202,6 +215,34 @@ def suffixes() -> __UnaryFn:
     def __inner(arg: __Sequence):
         for size in __builtins.range(len(arg), 0, -1):
             yield tuple(__itertools.islice(arg, None, size))
+    return __UnaryFn(__inner)
+
+def replicate(mask: __Iterable) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Sequence):
+        it = iter(arg)
+        for times in mask:
+            item = next(it)
+            for _ in __builtins.range(times):
+                yield item
+    return __UnaryFn(__inner)
+
+def contains(value: __Any) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Iterable):
+        for item in arg:
+            if value == item:
+                return True
+        return False
+    return __UnaryFn(__inner)
+
+def contains_if(predicate: __Callable[[__Any], bool]) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Iterable):
+        for item in arg:
+            if predicate(item):
+                return True
+        return False
     return __UnaryFn(__inner)
 
 def count(value: __Any) -> __UnaryFn:
@@ -382,9 +423,3 @@ def sliding_reduce(size: int, reducer: __Callable[[__Any, __Any], __Any]) -> __U
 def sliding_scan(size: int, reducer: __Callable[[__Any, __Any], __Any]) -> __UnaryFn:
     """Return `sliding_map` combined with `scan`"""
     return sliding_map(size, scan(reducer))
-
-def zippify() -> __UnaryFn:
-    """"""
-    def __inner(arg: __Sequence):
-        return zip(*arg)
-    return __UnaryFn(__inner)
