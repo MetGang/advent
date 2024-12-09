@@ -4,13 +4,8 @@ from ..classes import NullaryFn as __NullaryFn
 from ..classes import UnaryFn as __UnaryFn
 
 __all__ = [
-    'flip',
     'train',
 ]
-
-def flip(f: __BinaryFn) -> __BinaryFn:
-    """Flip/switch arguments of the binary function `f`"""
-    return __BinaryFn(lambda a, b: f(b, a))
 
 def train(f: __AnyFn, g: __BinaryFn, h: __AnyFn) -> __AnyFn:
     """Apply results of `f` and `h` to the binary function `g`"""

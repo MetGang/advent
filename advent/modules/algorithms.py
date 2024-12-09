@@ -67,6 +67,8 @@ __all__ = [
     'sliding_filter_not',
     'sliding_reduce',
     'sliding_scan',
+    'permutations',
+    'combinations',
 ]
 
 def map(mapper: __Union[__Callable[[__Any], __Any], __Mapping]) -> __UnaryFn:
@@ -423,3 +425,15 @@ def sliding_reduce(size: int, reducer: __Callable[[__Any, __Any], __Any]) -> __U
 def sliding_scan(size: int, reducer: __Callable[[__Any, __Any], __Any]) -> __UnaryFn:
     """Return `sliding_map` combined with `scan`"""
     return sliding_map(size, scan(reducer))
+
+def permutations(size: int) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Iterable):
+        return __itertools.permutations(arg, size)
+    return __UnaryFn(__inner)
+
+def combinations(size: int) -> __UnaryFn:
+    """"""
+    def __inner(arg: __Iterable):
+        return __itertools.combinations(arg, size)
+    return __UnaryFn(__inner)

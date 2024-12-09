@@ -33,11 +33,11 @@ class UnaryFn:
     def __or__(self, other: __Union[UnaryFn, __Callable[[__Any], __Any]]) -> UnaryFn:
         return UnaryFn(lambda arg: other.__call__(self.__call__(arg)))
 
-    def __rshift__(self, rhs: __Any) -> NullaryFn:
-        return NullaryFn(lambda: self.__call__(rhs))
-
     def __call__(self, arg: __Any) -> __Any:
         return self.fn(arg)
+
+    def bind(self, rhs: __Any) -> NullaryFn:
+        return NullaryFn(lambda: self.__call__(rhs))
 
 class BinaryFn:
     __slots__ = ('fn',)
@@ -48,13 +48,16 @@ class BinaryFn:
     def __or__(self, other: __Union[UnaryFn, __Callable[[__Any], __Any]]) -> BinaryFn:
         return BinaryFn(lambda lhs, rhs: other.__call__(self.__call__(lhs, rhs)))
 
-    def __lshift__(self, lhs: __Any) -> UnaryFn:
-        return UnaryFn(lambda arg: self.__call__(lhs, arg))
-
-    def __rshift__(self, rhs: __Any) -> UnaryFn:
-        return UnaryFn(lambda arg: self.__call__(arg, rhs))
-
     def __call__(self, lhs: __Any, rhs: __Any) -> __Any:
         return self.fn(lhs, rhs)
+
+    def left(self, lhs: __Any) -> UnaryFn:
+        return UnaryFn(lambda arg: self.__call__(lhs, arg))
+
+    def right(self, rhs: __Any) -> UnaryFn:
+        return UnaryFn(lambda arg: self.__call__(arg, rhs))
+
+    def flip(self) -> BinaryFn:
+        return BinaryFn(lambda lhs, rhs: self.__call__(rhs, lhs))
 
 AnyFn: __TypeAlias = __Union[NullaryFn, UnaryFn, BinaryFn]
