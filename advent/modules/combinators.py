@@ -8,10 +8,6 @@ from ..classes import BinaryFn as __BinaryFn
 from ..classes import NullaryFn as __NullaryFn
 from ..classes import UnaryFn as __UnaryFn
 
-__all__ = [
-    'train',
-]
-
 def train(f: __Union[__Callable[[], __Any], __Callable[[__Any], __Any], __Callable[[__Any, __Any], __Any]], g: __Callable[[__Any, __Any], __Any], h: __Union[__Callable[[], __Any], __Callable[[__Any], __Any], __Callable[[__Any, __Any], __Any]]) -> __AnyFn:
     """Apply results of `f` and `h` to the binary function `g`"""
     f_arity = len(__inspect.signature(f).parameters)

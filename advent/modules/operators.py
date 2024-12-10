@@ -23,6 +23,8 @@ __all__ = [
     'bit_rsh',
     'plus',
     'minus',
+    'inc',
+    'dec',
     'add',
     'sub',
     'mul',
@@ -96,6 +98,12 @@ plus = __UnaryFn(lambda a: +a)
 
 minus = __UnaryFn(lambda a: -a)
 """Return `-a`"""
+
+inc = __UnaryFn(lambda a: a + 1)
+"""Return `a + 1`"""
+
+dec = __UnaryFn(lambda a: a - 1)
+"""Return `a - 1`"""
 
 add = __BinaryFn(lambda a, b: a + b)
 """Return `a + b`"""
