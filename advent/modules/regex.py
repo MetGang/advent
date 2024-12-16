@@ -5,7 +5,7 @@ from ..classes import UnaryFn as __UnaryFn
 def split(pattern: str, limit: int = 0) -> __UnaryFn:
     """_"""
     def __inner(s: str) -> str:
-        return (item for item in __re.split(pattern, s, limit))
+        return __re.split(pattern, s, limit)
     return __UnaryFn(__inner)
 
 def replace(pattern: str, new: str) -> __UnaryFn:
@@ -17,5 +17,5 @@ def replace(pattern: str, new: str) -> __UnaryFn:
 def find_all(pattern: str) -> __UnaryFn:
     """_"""
     def __inner(s: str) -> str:
-        return (item for item in __re.findall(pattern, s))
+        return __re.findall(pattern, s)[0]
     return __UnaryFn(__inner)
