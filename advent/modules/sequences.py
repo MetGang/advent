@@ -23,7 +23,8 @@ __all__ = [
     'drop',
     'drop_every',
     'distinct',
-    'sort',
+    'sort_by',
+    'sort_with',
     'reverse',
     'cycle',
     'enumerate',
@@ -158,12 +159,14 @@ def distinct() -> UnaryFn:
                 yield item
     return UnaryFn(__inner)
 
-def sort(comparator: Callable[[Any, Any], bool]) -> UnaryFn:
-    """Return elements sorted with given `comparator`"""
+def sort_by(key_fn: Callable[[Any], Any] = lambda x: x) -> UnaryFn:
+    """Sort iterable using a key extraction function"""
+    return UnaryFn(lambda iterable: sorted(iterable, key=key_fn))
+
+def sort_with(comparator: Callable[[Any, Any], bool]) -> UnaryFn:
+    """Sort iterable using a binary boolean predicate comparator"""
     key = cmp_to_key(lambda a, b: -1 if comparator(a, b) else (1 if comparator(b, a) else 0))
-    def __inner(arg: Iterable):
-        return sorted(arg, key=key)
-    return UnaryFn(__inner)
+    return UnaryFn(lambda iterable: sorted(iterable, key=key))
 
 def reverse() -> UnaryFn:
     """Return elements in reversed order"""
