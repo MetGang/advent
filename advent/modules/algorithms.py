@@ -5,11 +5,11 @@ import itertools
 import operator
 from collections import defaultdict
 from collections.abc import Iterable, Mapping, Reversible, Sequence
+from functools import cmp_to_key
 from pathlib import Path
 from typing import Any, Callable, Sized
 
 from ..classes import UnaryFn
-from ..utility import comparator_to_key
 
 __all__ = [
     'map',
@@ -161,8 +161,9 @@ def distinct() -> UnaryFn:
 
 def sort(comparator: Callable[[Any, Any], bool]) -> UnaryFn:
     """Return elements sorted with given `comparator`"""
+    key = cmp_to_key(lambda a, b: -1 if comparator(a, b) else (1 if comparator(b, a) else 0))
     def __inner(arg: Iterable):
-        return sorted(arg, key=comparator_to_key(comparator))
+        return sorted(arg, key=key)
     return UnaryFn(__inner)
 
 def reverse() -> UnaryFn:
