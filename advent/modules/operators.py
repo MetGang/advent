@@ -1,8 +1,8 @@
-import builtins as __builtins
-import math as __math
+import builtins
+import math
+import operator
 
-from ..classes import BinaryFn as __BinaryFn
-from ..classes import UnaryFn as __UnaryFn
+from ..classes import BinaryFn, UnaryFn
 
 __all__ = [
     'eq',
@@ -45,116 +45,116 @@ __all__ = [
     'odd',
 ]
 
-eq = __BinaryFn(lambda a, b: a == b)
+eq = BinaryFn(operator.eq)
 """Return `a == b`"""
 
-ne = __BinaryFn(lambda a, b: a != b)
+ne = BinaryFn(operator.ne)
 """Return `a != b`"""
 
-lt = __BinaryFn(lambda a, b: a < b)
+lt = BinaryFn(operator.lt)
 """Return `a < b`"""
 
-le = __BinaryFn(lambda a, b: a <= b)
+le = BinaryFn(operator.le)
 """Return `a <= b`"""
 
-gt = __BinaryFn(lambda a, b: a > b)
+gt = BinaryFn(operator.gt)
 """Return `a > b`"""
 
-ge = __BinaryFn(lambda a, b: a >= b)
+ge = BinaryFn(operator.ge)
 """Return `a >= b`"""
 
-logic_not = __UnaryFn(lambda a: not a)
+logic_not = UnaryFn(operator.not_)
 """Return `not a`"""
 
-logic_or = __BinaryFn(lambda a, b: a or b)
+logic_or = BinaryFn(lambda a, b: a or b)
 """Return `a or b`"""
 
-logic_and = __BinaryFn(lambda a, b: a and b)
+logic_and = BinaryFn(lambda a, b: a and b)
 """Return `a and b`"""
 
-logic_xor = __BinaryFn(lambda a, b: (a and not b) or (not a and b))
-"""Return `(a and not b) or (not a and b)`"""
+logic_xor = BinaryFn(lambda a, b: bool(a) != bool(b))
+"""Return `bool(a) != bool(b)`"""
 
-bit_not = __UnaryFn(lambda a: ~a)
+bit_not = UnaryFn(operator.invert)
 """Return `~a`"""
 
-bit_or = __BinaryFn(lambda a, b: a | b)
+bit_or = BinaryFn(operator.or_)
 """Return `a | b`"""
 
-bit_and = __BinaryFn(lambda a, b: a & b)
+bit_and = BinaryFn(operator.and_)
 """Return `a & b`"""
 
-bit_xor = __BinaryFn(lambda a, b: a ^ b)
+bit_xor = BinaryFn(operator.xor)
 """Return `a ^ b`"""
 
-bit_lsh = __BinaryFn(lambda a, b: a << b)
+bit_lsh = BinaryFn(operator.lshift)
 """Return `a << b`"""
 
-bit_rsh = __BinaryFn(lambda a, b: a >> b)
+bit_rsh = BinaryFn(operator.rshift)
 """Return `a >> b`"""
 
-plus = __UnaryFn(lambda a: +a)
+plus = UnaryFn(operator.pos)
 """Return `+a`"""
 
-minus = __UnaryFn(lambda a: -a)
+minus = UnaryFn(operator.neg)
 """Return `-a`"""
 
-inc = __UnaryFn(lambda a: a + 1)
+inc = UnaryFn(lambda a: a + 1)
 """Return `a + 1`"""
 
-dec = __UnaryFn(lambda a: a - 1)
+dec = UnaryFn(lambda a: a - 1)
 """Return `a - 1`"""
 
-add = __BinaryFn(lambda a, b: a + b)
+add = BinaryFn(operator.add)
 """Return `a + b`"""
 
-sub = __BinaryFn(lambda a, b: a - b)
+sub = BinaryFn(operator.sub)
 """Return `a - b`"""
 
-mul = __BinaryFn(lambda a, b: a * b)
+mul = BinaryFn(operator.mul)
 """Return `a * b`"""
 
-div = __BinaryFn(lambda a, b: a / b)
+div = BinaryFn(operator.truediv)
 """Return `a / b`"""
 
-idiv = __BinaryFn(lambda a, b: a // b)
+idiv = BinaryFn(operator.floordiv)
 """Return `a // b`"""
 
-mod = __BinaryFn(lambda a, b: a % b)
+mod = BinaryFn(operator.mod)
 """Return `a % b`"""
 
-pow = __BinaryFn(lambda a, b: a ** b)
+pow = BinaryFn(operator.pow)
 """Return `a ** b`"""
 
-abs = __UnaryFn(lambda a: __builtins.abs(a))
+abs = UnaryFn(operator.abs)
 """Return `abs(a)`"""
 
-sign = __UnaryFn(lambda a: (a > 0) - (a < 0))
+sign = UnaryFn(lambda a: (a > 0) - (a < 0))
 """Return `(a > 0) - (a < 0)`"""
 
-diff = __BinaryFn(lambda a, b: __builtins.abs(a - b))
+diff = BinaryFn(lambda a, b: builtins.abs(a - b))
 """Return `abs(a - b)`"""
 
-floor = __UnaryFn(lambda a: __math.floor(a))
+floor = UnaryFn(math.floor)
 """Return `math.floor(a)`"""
 
-ceil = __UnaryFn(lambda a: __math.ceil(a))
+ceil = UnaryFn(math.ceil)
 """Return `math.ceil(a)`"""
 
-min = __BinaryFn(lambda a, b: __builtins.min(a, b))
+min = BinaryFn(builtins.min)
 """Return `min(a, b)`"""
 
-max = __BinaryFn(lambda a, b: __builtins.max(a, b))
+max = BinaryFn(builtins.max)
 """Return `max(a, b)`"""
 
-lcm = __BinaryFn(lambda a, b: __math.lcm(a, b))
+lcm = BinaryFn(math.lcm)
 """Return `math.lcm(a, b)`"""
 
-gcd = __BinaryFn(lambda a, b: __math.gcd(a, b))
+gcd = BinaryFn(math.gcd)
 """Return `math.gcd(a, b)`"""
 
-even = __UnaryFn(lambda a: a % 2 == 0)
+even = UnaryFn(lambda a: a % 2 == 0)
 """Return `a % 2 == 0`"""
 
-odd = __UnaryFn(lambda a: a % 2 != 0)
+odd = UnaryFn(lambda a: a % 2 != 0)
 """Return `a % 2 != 0`"""
