@@ -6,7 +6,6 @@ import operator
 from collections import defaultdict
 from collections.abc import Iterable, Mapping, Reversible, Sequence
 from functools import cmp_to_key
-from pathlib import Path
 from typing import Any, Callable, Sized
 
 from ..classes import UnaryFn
