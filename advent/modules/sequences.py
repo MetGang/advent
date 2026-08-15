@@ -20,8 +20,11 @@ __all__ = [
     'group_by',
     'take',
     'take_every',
+    'take_while',
     'drop',
     'drop_every',
+    'drop_while',
+    'compress',
     'distinct',
     'sort_by',
     'sort_with',
@@ -135,6 +138,10 @@ def take_every(step: int) -> UnaryFn:
                 yield item
     return UnaryFn(__inner)
 
+def take_while(predicate: Callable[[Any], bool]) -> UnaryFn:
+    """Take elements from the start while predicate evaluates to True"""
+    return UnaryFn(lambda arg: itertools.takewhile(predicate, arg))
+
 def drop(count: int) -> UnaryFn:
     """Return all but first `count` elements"""
     def __inner(arg: Iterable):
@@ -148,6 +155,14 @@ def drop_every(step: int) -> UnaryFn:
             if i % step != 0:
                 yield item
     return UnaryFn(__inner)
+
+def drop_while(predicate: Callable[[Any], bool]) -> UnaryFn:
+    """Drop elements from the start while predicate evaluates to True"""
+    return UnaryFn(lambda arg: itertools.dropwhile(predicate, arg))
+
+def compress(mask: Iterable[bool]) -> UnaryFn:
+    """Filter elements where corresponding value in `mask` is True"""
+    return UnaryFn(lambda arg: itertools.compress(arg, mask))
 
 def distinct() -> UnaryFn:
     """Return distinct (unique) elements preserving order"""
