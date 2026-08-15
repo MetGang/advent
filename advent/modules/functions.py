@@ -1,25 +1,32 @@
-from typing import Any as __Any
-from typing import Callable as __Callable
+from typing import Any, Callable
 
-from ..classes import UnaryFn as __UnaryFn
+from ..classes import UnaryFn
 
-def to(T: type) -> __UnaryFn:
-    """Return element casted to `T`"""
-    return __UnaryFn(T)
+__all__ = [
+    'to',
+    'apply',
+    'partial',
+    'identity',
+]
 
-def apply(callable: __Callable[[__Any], __Any]) -> __UnaryFn:
-    """Return result of `callable`(element)"""
-    def __inner(arg: __Any):
-        return callable(arg)
-    return __UnaryFn(__inner)
+def to(T: type) -> UnaryFn:
+    """Return a unary function that casts its argument to `T`"""
+    return UnaryFn(T)
 
-def partial(fn: __Callable[[__Any], __Any], projector: __Callable[[__Any], __Any]) -> __UnaryFn:
-    def __inner(arg):
+def apply(fn: Callable[[Any], Any]) -> UnaryFn:
+    """Return a unary function that applies `fn` to its argument"""
+    def __inner(arg: Any) -> Any:
+        return fn(arg)
+    return UnaryFn(__inner)
+
+def partial(fn: Callable[[Any], Any], projector: Callable[[Any], Any]) -> UnaryFn:
+    """Return a unary function that applies `fn` parameterized by `projector(arg)` to `arg`"""
+    def __inner(arg: Any) -> Any:
         return fn(projector(arg))(arg)
-    return __UnaryFn(__inner)
+    return UnaryFn(__inner)
 
-def identity() -> __UnaryFn:
-    """Return itself"""
-    def __inner(arg: __Any):
+def identity() -> UnaryFn:
+    """Return a unary function that returns its argument unchanged"""
+    def __inner(arg: Any) -> Any:
         return arg
-    return __UnaryFn(__inner)
+    return UnaryFn(__inner)
