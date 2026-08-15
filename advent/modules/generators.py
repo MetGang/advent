@@ -1,51 +1,61 @@
-import builtins as __builtins
-import itertools as __itertools
-from pathlib import Path as __Path
-from typing import Any as __Any
-from typing import Union as __Union
+import builtins
+import itertools
+from pathlib import Path
+from typing import Any
 
-from ..classes import NullaryFn as __NullaryFn
+from ..classes import NullaryFn
 
-def iterate(any: __Any) -> __NullaryFn:
-    """Return iterator for given `any` argument"""
+__all__ = [
+    'iterate',
+    'range',
+    'irange',
+    'infinite_range',
+    'read_input',
+    'read_file',
+    'read_file_lines',
+]
+
+def iterate(iterable: Any) -> NullaryFn:
+    """Return iterator for given `iterable` argument"""
     def __inner():
-        return __builtins.iter(any)
-    return __NullaryFn(__inner)
+        return iter(iterable)
+    return NullaryFn(__inner)
 
-def range(begin: int, end: int, step: int = 1) -> __NullaryFn:
-    """Return generator for [ `begin`, `end` ) range with given `step`"""
+def range(begin: int, end: int, step: int = 1) -> NullaryFn:
+    """Return generator for half-open [ `begin`, `end` ) range with given `step`"""
     def __inner():
-        return __builtins.range(begin, end, step)
-    return __NullaryFn(__inner)
+        return builtins.range(begin, end, step)
+    return NullaryFn(__inner)
 
-def irange(first: int, last: int, step: int = 1) -> __NullaryFn:
-    """Return generator for [ `first`, `last` ] range with given `step`"""
+def irange(first: int, last: int, step: int = 1) -> NullaryFn:
+    """Return generator for inclusive [ `first`, `last` ] range with given `step`"""
+    stop = last + (1 if step > 0 else -1)
     def __inner():
-        return __builtins.range(first, last + 1, step)
-    return __NullaryFn(__inner)
+        return builtins.range(first, stop, step)
+    return NullaryFn(__inner)
 
-def infinite_range(first: int = 0, step: int = 1) -> __NullaryFn:
-    """Return generator for [ `first`, ∞ ) range with given `step`"""
+def infinite_range(first: int = 0, step: int = 1) -> NullaryFn:
+    """Return generator for infinite [ `first`, ∞ ) range with given `step`"""
     def __inner():
-        return __itertools.count(first, step)
-    return __NullaryFn(__inner)
+        return itertools.count(first, step)
+    return NullaryFn(__inner)
 
-def read_input() -> __NullaryFn:
+def read_input(prompt: str = '') -> NullaryFn:
     """Return content typed by the user"""
     def __inner():
-        return input()
-    return __NullaryFn(__inner)
+        return input(prompt)
+    return NullaryFn(__inner)
 
-def read_file(path: __Union[__Path, str]) -> __NullaryFn:
+def read_file(path: Path | str, encoding: str = 'utf-8') -> NullaryFn:
     """Return content of the file designated by given `path`"""
     def __inner():
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding=encoding) as file:
             return file.read()
-    return __NullaryFn(__inner)
+    return NullaryFn(__inner)
 
-def read_file_lines(path: __Union[__Path, str]) -> __NullaryFn:
+def read_file_lines(path: Path | str, encoding: str = 'utf-8') -> NullaryFn:
     """Return lines of the file designated by given `path`"""
     def __inner():
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding=encoding) as file:
             return file.read().splitlines()
-    return __NullaryFn(__inner)
+    return NullaryFn(__inner)
