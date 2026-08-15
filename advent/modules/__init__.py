@@ -1,12 +1,12 @@
-from . import (algorithms, combinators, functions, generators, operators,
-               regex, textual)
+from . import (combinators, functions, generators, operators,
+               regex, sequences, textual)
 
 __all__ = [
-    'algorithms',
     'combinators',
     'functions',
     'generators',
     'operators',
     'regex',
+    'sequences',
     'textual',
 ]

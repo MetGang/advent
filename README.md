@@ -41,7 +41,7 @@ with open('input.txt') as file:
 ```python
 from advent import *
 
-solve = gn.read_file('input.txt') | tt.split_by('\n\n') | al.map(tt.split_by('\n') | al.map(int) | al.sum()) | al.max()
+solve = gn.read_file('input.txt') | tt.split_by('\n\n') | sq.map(tt.split_by('\n') | sq.map(int) | sq.sum()) | sq.max()
 
 print(solve())
 ```
@@ -63,13 +63,13 @@ File.read!("input.txt")
 
 ### Modules
 
-- algorithms (al)
 - combinators (cb)
-- functions (fun)
-- generators (gen)
+- functions (fn)
+- generators (gn)
 - operators (op)
-- regex (rgx)
-- textual (txt)
+- regex (rx)
+- sequences (sq)
+- textual (tt)
 
 ### Features
 
