@@ -41,9 +41,18 @@ with open('input.txt') as file:
 ```python
 from advent import *
 
-solve = gn.read_file('input.txt') | tt.split_by('\n\n') | sq.map(tt.split_by('\n') | sq.map(int) | sq.sum()) | sq.max()
+solver = (
+    gn.read_file('input.txt')
+    | tt.split_by('\n\n')
+    | sq.map(
+        tt.split_by('\n')
+        | sq.map(int)
+        | sq.sum()
+    )
+    | sq.max()
+)
 
-print(solve())
+print(solver())
 ```
 
 ###### Elixir solution for comparision
