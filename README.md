@@ -11,6 +11,7 @@ While Python is a very versatile and powerful programming language it lacks func
 For better demonstration let's look at the puzzle [Calorie Counting](https://adventofcode.com/2022/day/1) from day 1 of Advent of Code 2022.
 
 ###### Regular Python with loops
+
 ```python
 with open('input.txt') as file:
     content = file.read()
@@ -26,6 +27,7 @@ with open('input.txt') as file:
 ```
 
 ###### More functional oriented Python
+
 ```python
 with open('input.txt') as file:
     content = file.read()
@@ -35,6 +37,7 @@ with open('input.txt') as file:
 ```
 
 ###### Python with advent
+
 ```python
 from advent import *
 
@@ -44,6 +47,7 @@ print(solve())
 ```
 
 ###### Elixir solution for comparision
+
 ```elixir
 File.read!("input.txt")
   |> String.split("\n\n")
@@ -52,7 +56,7 @@ File.read!("input.txt")
     |> String.split("\n")
     |> Stream.map(&String.to_integer/1)
     |> Enum.sum()
-  end)xD
+  end)
   |> Enum.max()
   |> IO.puts()
 ```
