@@ -41,7 +41,7 @@ with open('input.txt') as file:
 ```python
 from advent import *
 
-solve = gn.read_file('input.txt') | txt.split_by('\n\n') | al.map(txt.split_by('\n') | al.map(int) | al.sum()) | al.max()
+solve = gn.read_file('input.txt') | tt.split_by('\n\n') | al.map(tt.split_by('\n') | al.map(int) | al.sum()) | al.max()
 
 print(solve())
 ```
