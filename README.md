@@ -55,7 +55,7 @@ solver = (
 print(solver())
 ```
 
-###### Elixir solution for comparision
+###### Elixir solution for comparison
 
 ```elixir
 File.read!("input.txt")
