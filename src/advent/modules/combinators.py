@@ -8,7 +8,27 @@ __all__ = [
 ]
 
 def train(f: Callable[..., Any], g: Callable[[Any, Any], Any], h: Callable[..., Any]) -> AnyFn:
-    """Apply results of `f` and `h` to the binary function `g`"""
+    """Apply results of `f` and `h` to the binary function `g`.
+
+    Examples:
+        >>> inc = lambda x: x + 1
+        >>> twice = lambda x: x * 2
+        >>> combined = train(inc, lambda a, b: a + b, twice)
+        >>> combined(3)
+        10
+
+        >>> left = lambda: 2
+        >>> right = lambda: 3
+        >>> product = train(left, lambda a, b: a * b, right)
+        >>> product()
+        6
+
+        >>> f = lambda a, b: a + b
+        >>> h = lambda a, b: a * b
+        >>> paired = train(f, lambda x, y: x + y, h)
+        >>> paired(5, 3)
+        23
+    """
     f_arity = len(inspect.signature(f).parameters)
     h_arity = len(inspect.signature(h).parameters)
 

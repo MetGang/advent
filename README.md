@@ -87,6 +87,10 @@ File.read!("input.txt")
 - Arguments binding
 - Basic combinators
 
+### Testing
+
+Each function has its own doctest entry. Full suite can be run via `pytest --doctest-modules`.
+
 ### References
 
 - [Mastering Dyalog APL](https://www.dyalog.com/uploads/documents/MasteringDyalogAPL.pdf)
