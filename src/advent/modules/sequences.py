@@ -4,9 +4,9 @@ import functools
 import itertools
 import operator
 from collections import defaultdict
-from collections.abc import Iterable, Mapping, Reversible, Sequence
+from collections.abc import Iterable, Mapping, Reversible, Sequence, Sized
 from functools import cmp_to_key
-from typing import Any, Callable, Sized
+from typing import Any, Callable
 
 from ..classes import UnaryFn
 
@@ -80,12 +80,12 @@ def map(mapper: Callable[[Any], Any] | Mapping) -> UnaryFn:
     [1, 2]
     """
     if callable(mapper):
-        def __inner(arg: Iterable):
+        def __inner_callable(arg: Iterable):
             return builtins.map(mapper, arg)
-    else:
-        def __inner(arg: Iterable):
-            return builtins.map(lambda item: mapper[item], arg)
-    return UnaryFn(__inner)
+        return UnaryFn(__inner_callable)
+    def __inner_mapping(arg: Iterable):
+        return builtins.map(lambda item: mapper[item], arg)
+    return UnaryFn(__inner_mapping)
 
 def filter(predicate: Callable[[Any], bool]) -> UnaryFn:
     """
@@ -569,13 +569,10 @@ def first() -> UnaryFn:
     1
     >>> first()([])
     """
-    def __inner(arg: Iterable | Sequence):
-        try:
-            return arg[0]
-        except (TypeError, LookupError):
-            for item in arg:
-                return item
-            return None
+    def __inner(arg: Iterable):
+        if isinstance(arg, Sequence):
+            return arg[0] if arg else None
+        return next(iter(arg), None)
     return UnaryFn(__inner)
 
 def last() -> UnaryFn:
@@ -586,14 +583,13 @@ def last() -> UnaryFn:
     3
     >>> last()([])
     """
-    def __inner(arg: Iterable | Sequence):
-        try:
-            return arg[-1]
-        except (TypeError, LookupError):
-            item = None
-            for item in arg:
-                pass
-            return item
+    def __inner(arg: Iterable):
+        if isinstance(arg, Sequence):
+            return arg[-1] if arg else None
+        item = None
+        for item in arg:
+            pass
+        return item
     return UnaryFn(__inner)
 
 def pick(idx: int) -> UnaryFn:
@@ -604,13 +600,10 @@ def pick(idx: int) -> UnaryFn:
     'b'
     >>> pick(5)(['a', 'b', 'c'])
     """
-    def __inner(arg: Iterable | Sequence):
+    def __inner(arg: Iterable):
         try:
-            return arg[idx]
-        except (TypeError, LookupError):
-            for i, v in builtins.enumerate(arg):
-                if i == idx:
-                    return v
+            return tuple(arg)[idx]
+        except IndexError:
             return None
     return UnaryFn(__inner)
 
@@ -643,18 +636,15 @@ def edges() -> UnaryFn:
     >>> edges()([])
     (None, None)
     """
-    def __inner(arg: Iterable | Sequence):
+    def __inner(arg: Iterable):
+        it = iter(arg)
         try:
-            return arg[0], arg[-1]
-        except (TypeError, LookupError):
-            it = iter(arg)
-            try:
-                first_item = last_item = next(it)
-            except StopIteration:
-                return None, None
-            for last_item in it:
-                pass
-            return first_item, last_item
+            first_item = last_item = next(it)
+        except StopIteration:
+            return None, None
+        for last_item in it:
+            pass
+        return first_item, last_item
     return UnaryFn(__inner)
 
 def tally() -> UnaryFn:
@@ -666,11 +656,10 @@ def tally() -> UnaryFn:
     >>> tally()(iter([1, 2, 3]))
     3
     """
-    def __inner(arg: Iterable | Sized):
-        try:
+    def __inner(arg: Iterable):
+        if isinstance(arg, Sized):
             return len(arg)
-        except TypeError:
-            return builtins.sum(1 for _ in arg)
+        return builtins.sum(1 for _ in arg)
     return UnaryFn(__inner)
 
 def sliding(size: int) -> UnaryFn:
